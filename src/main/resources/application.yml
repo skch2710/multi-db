@@ -5,17 +5,25 @@ spring:
       url: jdbc:postgresql://localhost:5432/sathish
       username: postgres
       password: Sathish@123
+      hikari:
+        maximum-pool-size: 10
     db2:
       url: jdbc:postgresql://localhost:5432/kumar
       username: postgres
       password: Sathish@123
+      hikari:
+        maximum-pool-size: 10
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+#      naming:
+#        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
         show_sql: true
-
+        
+#logging:
+#  level:
+#    org.hibernate.SQL: DEBUG
+#    org.hibernate.type: TRACE
