@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.demo.multidb.db1.dao.EmployeeOneDAO;
 import com.demo.multidb.db1.dao.StudentDAO;
+import com.demo.multidb.db1.model.EmployeeOne;
 import com.demo.multidb.db1.model.Student;
 import com.demo.multidb.db1.service.StudentService;
 import com.demo.multidb.db2.dao.EmployeeDAO;
@@ -22,9 +24,12 @@ public class StudentServiceImpl implements StudentService {
 
 	@Autowired
 	private StudentDAO studentDAO;
-	
+
 	@Autowired
 	private EmployeeDAO employeeDAO;
+
+	@Autowired
+	private EmployeeOneDAO employeeOneDAO;
 
 	@Override
 	public Result saveStudent(Student student) {
@@ -76,7 +81,7 @@ public class StudentServiceImpl implements StudentService {
 				CombineDTO combineDTO = new CombineDTO();
 				combineDTO.setStudent(student);
 				combineDTO.setEmployee(employee);
-				
+
 				result = new Result(combineDTO);
 				result.setStatusCode(HttpStatus.OK.value());
 				result.setSuccessMessage("geting SuccusFully.");
@@ -84,6 +89,31 @@ public class StudentServiceImpl implements StudentService {
 				result = new Result();
 				result.setStatusCode(HttpStatus.NO_CONTENT.value());
 				result.setErrorMessage("Not Found.");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	@Override
+	public Result saveCombine(Employee employee) {
+		Result result = null;
+		try {
+
+			Employee serverEmployee = employeeDAO.save(employee);
+
+			if (serverEmployee != null) {
+
+				EmployeeOne employeeOne1 = new EmployeeOne();
+				employeeOne1.setEmpId(serverEmployee.getEmpId());
+				employeeOne1.setFullName(serverEmployee.getFullName());
+
+				EmployeeOne serverEmployeeOne = employeeOneDAO.save(employeeOne1);
+
+				result = new Result(serverEmployeeOne);
+				result.setStatusCode(HttpStatus.OK.value());
+				result.setSuccessMessage(employee.getEmpId() > 0 ? "Updated Success":"Saved Success");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

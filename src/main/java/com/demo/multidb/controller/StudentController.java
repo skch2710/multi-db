@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.multidb.db1.model.Student;
 import com.demo.multidb.db1.service.StudentService;
+import com.demo.multidb.db2.model.Employee;
 import com.demo.multidb.dto.CombineSearch;
 import com.demo.multidb.dto.StudentSearch;
 
@@ -31,10 +32,15 @@ public class StudentController {
 	public ResponseEntity<?> getStudents(@RequestBody StudentSearch search) {
 		return ResponseEntity.ok(studentService.getStudent(search));
 	}
-	
+
 	@PostMapping("/get-combine")
 	public ResponseEntity<?> getCombine(@RequestBody CombineSearch search) {
 		return ResponseEntity.ok(studentService.getCombine(search));
+	}
+
+	@PostMapping("/save-both-employees")
+	public ResponseEntity<?> saveEmployee(@RequestBody Employee employee) {
+		return ResponseEntity.ok(studentService.saveCombine(employee));
 	}
 
 }
